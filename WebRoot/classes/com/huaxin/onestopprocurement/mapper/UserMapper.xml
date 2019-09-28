@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.huaxin.onestopprocurement.mapper.UserMapper" >
+  <resultMap id="BaseResultMap" type="com.huaxin.onestopprocurement.po.User" >
+    <id column="user-id" property="userId" jdbcType="INTEGER" />
+    <result column="user-name" property="userName" jdbcType="VARCHAR" />
+    <result column="user-password" property="userPassword" jdbcType="VARCHAR" />
+    <result column="user-email" property="userEmail" jdbcType="VARCHAR" />
+    <result column="user-info" property="userInfo" jdbcType="VARCHAR" />
+    <result column="user-address" property="userAddress" jdbcType="VARCHAR" />
+    <result column="user-mobilephone" property="userMobilephone" jdbcType="BIGINT" />
+    <result column="user-phone" property="userPhone" jdbcType="VARCHAR" />
+    <result column="user-bonuspoint" property="userBonuspoint" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    user-id, user-name, user-password, user-email, user-info, user-address, user-mobilephone, 
+    user-phone, user-bonuspoint
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.huaxin.onestopprocurement.po.UserExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from user
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from user
+    where user-id = #{userId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from user
+    where user-id = #{userId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.huaxin.onestopprocurement.po.UserExample" >
+    delete from user
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.huaxin.onestopprocurement.po.User" >
+    insert into user (user-id, user-name, user-password, 
+      user-email, user-info, user-address, 
+      user-mobilephone, user-phone, user-bonuspoint
+      )
+    values (#{userId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{userPassword,jdbcType=VARCHAR}, 
+      #{userEmail,jdbcType=VARCHAR}, #{userInfo,jdbcType=VARCHAR}, #{userAddress,jdbcType=VARCHAR}, 
+      #{userMobilephone,jdbcType=BIGINT}, #{userPhone,jdbcType=VARCHAR}, #{userBonuspoint,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.huaxin.onestopprocurement.po.User" >
+    insert into user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        user-id,
+      </if>
+      <if test="userName != null" >
+        user-name,
+      </if>
+      <if test="userPassword != null" >
+        user-password,
+      </if>
+      <if test="userEmail != null" >
+        user-email,
+      </if>
+      <if test="userInfo != null" >
+        user-info,
+      </if>
+      <if test="userAddress != null" >
+        user-address,
+      </if>
+      <if test="userMobilephone != null" >
+        user-mobilephone,
+      </if>
+      <if test="userPhone != null" >
+        user-phone,
+      </if>
+      <if test="userBonuspoint != null" >
+        user-bonuspoint,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="userName != null" >
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="userPassword != null" >
+        #{userPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="userEmail != null" >
+        #{userEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="userInfo != null" >
+        #{userInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="userAddress != null" >
+        #{userAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="userMobilephone != null" >
+        #{userMobilephone,jdbcType=BIGINT},
+      </if>
+      <if test="userPhone != null" >
+        #{userPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="userBonuspoint != null" >
+        #{userBonuspoint,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.huaxin.onestopprocurement.po.UserExample" resultType="java.lang.Integer" >
+    select count(*) from user
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update user
+    <set >
+      <if test="record.userId != null" >
+        user-id = #{record.userId,jdbcType=INTEGER},
+      </if>
+      <if test="record.userName != null" >
+        user-name = #{record.userName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userPassword != null" >
+        user-password = #{record.userPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userEmail != null" >
+        user-email = #{record.userEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userInfo != null" >
+        user-info = #{record.userInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userAddress != null" >
+        user-address = #{record.userAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userMobilephone != null" >
+        user-mobilephone = #{record.userMobilephone,jdbcType=BIGINT},
+      </if>
+      <if test="record.userPhone != null" >
+        user-phone = #{record.userPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userBonuspoint != null" >
+        user-bonuspoint = #{record.userBonuspoint,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update user
+    set user-id = #{record.userId,jdbcType=INTEGER},
+      user-name = #{record.userName,jdbcType=VARCHAR},
+      user-password = #{record.userPassword,jdbcType=VARCHAR},
+      user-email = #{record.userEmail,jdbcType=VARCHAR},
+      user-info = #{record.userInfo,jdbcType=VARCHAR},
+      user-address = #{record.userAddress,jdbcType=VARCHAR},
+      user-mobilephone = #{record.userMobilephone,jdbcType=BIGINT},
+      user-phone = #{record.userPhone,jdbcType=VARCHAR},
+      user-bonuspoint = #{record.userBonuspoint,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.huaxin.onestopprocurement.po.User" >
+    update user
+    <set >
+      <if test="userName != null" >
+        user-name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="userPassword != null" >
+        user-password = #{userPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="userEmail != null" >
+        user-email = #{userEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="userInfo != null" >
+        user-info = #{userInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="userAddress != null" >
+        user-address = #{userAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="userMobilephone != null" >
+        user-mobilephone = #{userMobilephone,jdbcType=BIGINT},
+      </if>
+      <if test="userPhone != null" >
+        user-phone = #{userPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="userBonuspoint != null" >
+        user-bonuspoint = #{userBonuspoint,jdbcType=INTEGER},
+      </if>
+    </set>
+    where user-id = #{userId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.huaxin.onestopprocurement.po.User" >
+    update user
+    set user-name = #{userName,jdbcType=VARCHAR},
+      user-password = #{userPassword,jdbcType=VARCHAR},
+      user-email = #{userEmail,jdbcType=VARCHAR},
+      user-info = #{userInfo,jdbcType=VARCHAR},
+      user-address = #{userAddress,jdbcType=VARCHAR},
+      user-mobilephone = #{userMobilephone,jdbcType=BIGINT},
+      user-phone = #{userPhone,jdbcType=VARCHAR},
+      user-bonuspoint = #{userBonuspoint,jdbcType=INTEGER}
+    where user-id = #{userId,jdbcType=INTEGER}
+  </update>
+</mapper>

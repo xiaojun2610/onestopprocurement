@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.huaxin.onestopprocurement.mapper.ItemCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.huaxin.onestopprocurement.po.ItemCustom" >
+    <id column="item-id" property="itemId" jdbcType="INTEGER" />
+     <result column="item-name" property="itemName" jdbcType="VARCHAR" />
+    <result column="item-class" property="itemClass" jdbcType="INTEGER" />
+    <result column="item-desc" property="itemDesc" jdbcType="VARCHAR" />
+    <result column="item-price" property="itemPrice" jdbcType="DOUBLE" />
+    <result column="item-discount" property="itemDiscount" jdbcType="DOUBLE" />
+    <result column="item-img1" property="itemImg1" jdbcType="VARCHAR" />
+    <result column="item-img2" property="itemImg2" jdbcType="VARCHAR" />
+    <result column="item-img3" property="itemImg3" jdbcType="VARCHAR" />
+    <result column="item-descimg1" property="itemDescimg1" jdbcType="VARCHAR" />
+    <result column="item-descimg2" property="itemDescimg2" jdbcType="VARCHAR" />
+    <result column="item-descimg3" property="itemDescimg3" jdbcType="VARCHAR" />
+    <result column="item-descimg4" property="itemDescimg4" jdbcType="VARCHAR" />
+    <result column="item-descimg5" property="itemDescimg5" jdbcType="VARCHAR" />
+    <result column="item-count" property="itemCount" jdbcType="INTEGER" />
+    <result column="item-clickCount" property="itemClickcount" jdbcType="INTEGER" />
+    <result column="item-Address" property="itemAddress" jdbcType="VARCHAR" />
+    <result column="item-createtime" property="itemCreatetime" jdbcType="VARCHAR" />
+    <result column="item-expirtime" property="itemExpirtime" jdbcType="VARCHAR" />
+    <result column="item-status" property="itemStatus" jdbcType="INTEGER" />
+    <result column="item-norm" property="itemNorm" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  
+  <sql id="Base_Column_List" >
+    `item-id`, `item-name`, `item-class`, `item-desc`, `item-price`, `item-discount`, `item-img1`, 
+    `item-img2`, `item-img3`, `item-descimg1`, `item-descimg2`, `item-descimg3`, `item-descimg4`, 
+    `item-descimg5`, `item-count`, `item-clickCount`, `item-Address`, `item-createtime`, `item-expirtime`, 
+    `item-status`, `item-norm`
+  </sql>
+  
+   <sql id="query_items_where">
+   	<!-- 使用动态sql，通过if判断，满足条件进行sql拼接 -->
+   	<!-- 商品查询条件通过ItemsQueryVo包装对象 中itemsCustom属性传递 -->
+   			<if test="itemCustom.itemName!=null and itemCustom.itemName!=''">
+   			<bind name="pattern" value="'%' + itemCustom.itemName + '%'" />
+   				`item-name` LIKE #{pattern}
+   			</if>
+   			<if test="itemCustom.itemClass!=null and itemCustom.itemClass!=''">
+   			  and `item-class`= #{itemCustom.itemClass}
+   			</if>
+   			<if test="itemCustom.itemStatus!=null and itemCustom.itemStatus!=''">
+   			  and `item-status`= #{itemCustom.itemStatus}
+   			</if>
+   			<if test="itemCustom.maxPrice!=null and itemCustom.maxPrice!=''">
+   			  and `item-price` &lt;  #{itemCustom.maxPrice}
+   			</if>
+   			<if test="itemCustom.minPrice!=null and itemCustom.minPrice!=''">
+   			  and `item-price` &gt; #{itemCustom.minPrice}
+   			</if>
+	
+   </sql>
+   <!--根据ID 查询商品  -->
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from `item`
+    where `item-id` = #{itemId,jdbcType=INTEGER}
+  </select>
+   <!--查询所有商品  -->
+   <select id="selectAllItems" resultMap="BaseResultMap" parameterType="com.huaxin.onestopprocurement.po.ItemQueryVo" >
+    select 
+    <include refid="Base_Column_List" />
+    from `item`
+    limit  #{page.startRow,jdbcType=INTEGER},#{page.pageSize,jdbcType=INTEGER}  
+  </select>
+   <!--根据ID 删除商品  -->
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from `item`
+    where `item-id` = #{itemId,jdbcType=INTEGER}
+  </delete>
+  
+   <!-- 查询所有商品名称 -->
+  <select id="queryAllItemnames" resultType="String">
+    select `item-name` from `item`
+  </select>
+    <!-- 查询商品数量 -->
+  <select id="queryItemCount" resultType="int" parameterType="com.huaxin.onestopprocurement.po.ItemQueryVo">
+    select count('*') from `item`
+    <where>
+     <include refid="query_items_where"></include>
+    </where>  
+  </select>
+  
+   <!--根据查询条件 查询商品  -->
+  <select id="selectItemsByCritera" parameterType="com.huaxin.onestopprocurement.po.ItemQueryVo" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from `item` 
+    <where>
+     <include refid="query_items_where"></include>
+    </where>  
+     limit  #{page.startRow,jdbcType=INTEGER},#{page.pageSize,jdbcType=INTEGER}  
+  </select>
+  
+  
+  <!--添加商品信息  --> 
+  <insert id="insertSelective" parameterType="com.huaxin.onestopprocurement.po.Item" >
+    insert into `item`
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="itemId != null" >
+        `item-id`,
+      </if>
+      <if test="itemName != null" >
+        `item-name`,
+      </if>
+      <if test="itemClass != null" >
+        `item-class`,
+      </if>
+      <if test="itemDesc != null" >
+        `item-desc`,
+      </if>
+      <if test="itemPrice != null" >
+        `item-price`,
+      </if>
+      <if test="itemDiscount != null" >
+        `item-discount`,
+      </if>
+      <if test="itemImg1 != null" >
+        `item-img1`,
+      </if>
+      <if test="itemImg2 != null" >
+        `item-img2`,
+      </if>
+      <if test="itemImg3 != null" >
+        `item-img3`,
+      </if>
+      <if test="itemDescimg1 != null" >
+        `item-descimg1`,
+      </if>
+      <if test="itemDescimg2 != null" >
+        `item-descimg2`,
+      </if>
+      <if test="itemDescimg3 != null" >
+        `item-descimg3`,
+      </if>
+      <if test="itemDescimg4 != null" >
+        `item-descimg4``,
+      </if>
+      <if test="itemDescimg5 != null" >
+        `item-descimg5`,
+      </if>
+      <if test="itemCount != null" >
+        `item-count`,
+      </if>
+      <if test="itemClickcount != null" >
+        `item-clickCount`,
+      </if>
+      <if test="itemAddress != null" >
+        `item-Address`,
+      </if>
+      <if test="itemCreatetime != null" >
+        `item-createtime`,
+      </if>
+      <if test="itemExpirtime != null" >
+        `item-expirtime`,
+      </if>
+      <if test="itemStatus != null" >
+        `item-status`,
+      </if>
+      <if test="itemNorm != null" >
+        `item-norm`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="itemId != null" >
+        #{itemId,jdbcType=INTEGER},
+      </if>
+      <if test="itemName != null" >
+        #{itemName,jdbcType=VARCHAR},
+      </if>
+      <if test="itemClass != null" >
+        #{itemClass,jdbcType=INTEGER},
+      </if>
+      <if test="itemDesc != null" >
+        #{itemDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="itemPrice != null" >
+        #{itemPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="itemDiscount != null" >
+        #{itemDiscount,jdbcType=DOUBLE},
+      </if>
+      <if test="itemImg1 != null" >
+        #{itemImg1,jdbcType=VARCHAR},
+      </if>
+      <if test="itemImg2 != null" >
+        #{itemImg2,jdbcType=VARCHAR},
+      </if>
+      <if test="itemImg3 != null" >
+        #{itemImg3,jdbcType=VARCHAR},
+      </if>
+      <if test="itemDescimg1 != null" >
+        #{itemDescimg1,jdbcType=VARCHAR},
+      </if>
+      <if test="itemDescimg2 != null" >
+        #{itemDescimg2,jdbcType=VARCHAR},
+      </if>
+      <if test="itemDescimg3 != null" >
+        #{itemDescimg3,jdbcType=VARCHAR},
+      </if>
+      <if test="itemDescimg4 != null" >
+        #{itemDescimg4,jdbcType=VARCHAR},
+      </if>
+      <if test="itemDescimg5 != null" >
+        #{itemDescimg5,jdbcType=VARCHAR},
+      </if>
+      <if test="itemCount != null" >
+        #{itemCount,jdbcType=INTEGER},
+      </if>
+      <if test="itemClickcount != null" >
+        #{itemClickcount,jdbcType=INTEGER},
+      </if>
+      <if test="itemAddress != null" >
+        #{itemAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="itemCreatetime != null" >
+        #{itemCreatetime,jdbcType=VARCHAR},
+      </if>
+      <if test="itemExpirtime != null" >
+        #{itemExpirtime,jdbcType=VARCHAR},
+      </if>
+      <if test="itemStatus != null" >
+        #{itemStatus,jdbcType=INTEGER},
+      </if>
+      <if test="itemNorm != null" >
+        #{itemNorm,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+ <!--修改商品信息  -->
+  <update id="updateByPrimaryKeySelective" parameterType="com.huaxin.onestopprocurement.po.Item" >
+    update `item`
+    <set >
+      <if test="itemName != null" >
+        `item-name` = #{itemName,jdbcType=VARCHAR},
+      </if>
+      <if test="itemClass != null" >
+        `item-class` = #{itemClass,jdbcType=INTEGER},
+      </if>
+      <if test="itemDesc != null" >
+        `item-desc` = #{itemDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="itemPrice != null" >
+        `item-price` = #{itemPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="itemDiscount != null" >
+        `item-discount` = #{itemDiscount,jdbcType=DOUBLE},
+      </if>
+      <if test="itemImg1 != null" >
+        `item-img1` = #{itemImg1,jdbcType=VARCHAR},
+      </if>
+      <if test="itemImg2 != null" >
+        `item-img2` = #{itemImg2,jdbcType=VARCHAR},
+      </if>
+      <if test="itemImg3 != null" >
+        `item-img3` = #{itemImg3,jdbcType=VARCHAR},
+      </if>
+      <if test="itemDescimg1 != null" >
+        `item-descimg1` = #{itemDescimg1,jdbcType=VARCHAR},
+      </if>
+      <if test="itemDescimg2 != null" >
+        `item-descimg2` = #{itemDescimg2,jdbcType=VARCHAR},
+      </if>
+      <if test="itemDescimg3 != null" >
+        `item-descimg3` = #{itemDescimg3,jdbcType=VARCHAR},
+      </if>
+      <if test="itemDescimg4 != null" >
+        `item-descimg4` = #{itemDescimg4,jdbcType=VARCHAR},
+      </if>
+      <if test="itemDescimg5 != null" >
+        `item-descimg5` = #{itemDescimg5,jdbcType=VARCHAR},
+      </if>
+      <if test="itemCount != null" >
+        `item-count` = #{itemCount,jdbcType=INTEGER},
+      </if>
+      <if test="itemClickcount != null" >
+        `item-clickCount` = #{itemClickcount,jdbcType=INTEGER},
+      </if>
+      <if test="itemAddress != null" >
+        `item-Address` = #{itemAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="itemCreatetime != null" >
+        `item-createtime` = #{itemCreatetime,jdbcType=VARCHAR},
+      </if>
+      <if test="itemExpirtime != null" >
+        `item-expirtime` = #{itemExpirtime,jdbcType=VARCHAR},
+      </if>
+      <if test="itemStatus != null" >
+        `item-status` = #{itemStatus,jdbcType=INTEGER},
+      </if>
+      <if test="itemNorm != null" >
+        `item-norm` = #{itemNorm,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where `item-id` = #{itemId,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huaxin.onestopprocurement.mapper.UserCustomMapper">
+  <resultMap id="BaseResultMap" type="com.huaxin.onestopprocurement.po.UserCustom" >
+    <id column="user-id" property="userId" jdbcType="INTEGER" />
+    <result column="user-name" property="userName" jdbcType="VARCHAR" />
+    <result column="user-password" property="userPassword" jdbcType="VARCHAR" />
+    <result column="user-email" property="userEmail" jdbcType="VARCHAR" />
+    <result column="user-info" property="userInfo" jdbcType="VARCHAR" />
+    <result column="user-address" property="userAddress" jdbcType="VARCHAR" />
+    <result column="user-mobilephone" property="userMobilephone" jdbcType="BIGINT" />
+    <result column="user-phone" property="userPhone" jdbcType="VARCHAR" />
+    <result column="user-bonuspoint" property="userBonuspoint" jdbcType="INTEGER" />
+  </resultMap>
+<insert id="insertSelective" parameterType="com.huaxin.onestopprocurement.po.User" >
+    insert into `user`
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        `user-id`,
+      </if>
+      <if test="userName != null" >
+        `user-name`,
+      </if>
+      <if test="userPassword != null" >
+        `user-password`,
+      </if>
+      <if test="userEmail != null" >
+        `user-email`,
+      </if>
+      <if test="userInfo != null" >
+        `user-info`,
+      </if>
+      <if test="userAddress != null" >
+        `user-address`,
+      </if>
+      <if test="userMobilephone != null" >
+        `user-mobilephone`,
+      </if>
+      <if test="userPhone != null" >
+        `user-phone`,
+      </if>
+      <if test="userBonuspoint != null" >
+        `user-bonuspoint`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="userName != null" >
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="userPassword != null" >
+        #{userPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="userEmail != null" >
+        #{userEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="userInfo != null" >
+        #{userInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="userAddress != null" >
+        #{userAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="userMobilephone != null" >
+        #{userMobilephone,jdbcType=BIGINT},
+      </if>
+      <if test="userPhone != null" >
+        #{userPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="userBonuspoint != null" >
+        #{userBonuspoint,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="queryAllUsernames" resultType="String">
+    select `user-name` from `user`
+  </select>
+    <select id="queryUserByusername"  parameterType="com.huaxin.onestopprocurement.po.User" resultMap="BaseResultMap">
+    select * from `user` where `user-name`=#{userName}
+  </select>
+     <select id="queryCartCountByuserId" parameterType="com.huaxin.onestopprocurement.po.User" resultType="Integer">
+     select COUNT("item-id") from `cart` where `user-id`=#{userId}
+   </select>
+  
+  
+  </mapper>

@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.huaxin.onestopprocurement.mapper.ItemMapper" >
+  <resultMap id="BaseResultMap" type="com.huaxin.onestopprocurement.po.Item" >
+    <id column="item-id" property="itemId" jdbcType="INTEGER" />
+    <result column="item-name" property="itemName" jdbcType="VARCHAR" />
+    <result column="item-class" property="itemClass" jdbcType="INTEGER" />
+    <result column="item-desc" property="itemDesc" jdbcType="VARCHAR" />
+    <result column="item-price" property="itemPrice" jdbcType="INTEGER" />
+    <result column="item-discount" property="itemDiscount" jdbcType="DECIMAL" />
+    <result column="item-img1" property="itemImg1" jdbcType="VARCHAR" />
+    <result column="item-img2" property="itemImg2" jdbcType="VARCHAR" />
+    <result column="item-img3" property="itemImg3" jdbcType="VARCHAR" />
+    <result column="item-count" property="itemCount" jdbcType="INTEGER" />
+    <result column="item-clickCount" property="itemClickcount" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    item-id, item-name, item-class, item-desc, item-price, item-discount, item-img1, 
+    item-img2, item-img3, item-count, item-clickCount
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.huaxin.onestopprocurement.po.ItemExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from item
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from item
+    where item-id = #{itemId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from item
+    where item-id = #{itemId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.huaxin.onestopprocurement.po.ItemExample" >
+    delete from item
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.huaxin.onestopprocurement.po.Item" >
+    insert into item (item-id, item-name, item-class, 
+      item-desc, item-price, item-discount, 
+      item-img1, item-img2, item-img3, 
+      item-count, item-clickCount)
+    values (#{itemId,jdbcType=INTEGER}, #{itemName,jdbcType=VARCHAR}, #{itemClass,jdbcType=INTEGER}, 
+      #{itemDesc,jdbcType=VARCHAR}, #{itemPrice,jdbcType=INTEGER}, #{itemDiscount,jdbcType=DECIMAL}, 
+      #{itemImg1,jdbcType=VARCHAR}, #{itemImg2,jdbcType=VARCHAR}, #{itemImg3,jdbcType=VARCHAR}, 
+      #{itemCount,jdbcType=INTEGER}, #{itemClickcount,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.huaxin.onestopprocurement.po.Item" >
+    insert into item
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="itemId != null" >
+        item-id,
+      </if>
+      <if test="itemName != null" >
+        item-name,
+      </if>
+      <if test="itemClass != null" >
+        item-class,
+      </if>
+      <if test="itemDesc != null" >
+        item-desc,
+      </if>
+      <if test="itemPrice != null" >
+        item-price,
+      </if>
+      <if test="itemDiscount != null" >
+        item-discount,
+      </if>
+      <if test="itemImg1 != null" >
+        item-img1,
+      </if>
+      <if test="itemImg2 != null" >
+        item-img2,
+      </if>
+      <if test="itemImg3 != null" >
+        item-img3,
+      </if>
+      <if test="itemCount != null" >
+        item-count,
+      </if>
+      <if test="itemClickcount != null" >
+        item-clickCount,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="itemId != null" >
+        #{itemId,jdbcType=INTEGER},
+      </if>
+      <if test="itemName != null" >
+        #{itemName,jdbcType=VARCHAR},
+      </if>
+      <if test="itemClass != null" >
+        #{itemClass,jdbcType=INTEGER},
+      </if>
+      <if test="itemDesc != null" >
+        #{itemDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="itemPrice != null" >
+        #{itemPrice,jdbcType=INTEGER},
+      </if>
+      <if test="itemDiscount != null" >
+        #{itemDiscount,jdbcType=DECIMAL},
+      </if>
+      <if test="itemImg1 != null" >
+        #{itemImg1,jdbcType=VARCHAR},
+      </if>
+      <if test="itemImg2 != null" >
+        #{itemImg2,jdbcType=VARCHAR},
+      </if>
+      <if test="itemImg3 != null" >
+        #{itemImg3,jdbcType=VARCHAR},
+      </if>
+      <if test="itemCount != null" >
+        #{itemCount,jdbcType=INTEGER},
+      </if>
+      <if test="itemClickcount != null" >
+        #{itemClickcount,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.huaxin.onestopprocurement.po.ItemExample" resultType="java.lang.Integer" >
+    select count(*) from item
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update item
+    <set >
+      <if test="record.itemId != null" >
+        item-id = #{record.itemId,jdbcType=INTEGER},
+      </if>
+      <if test="record.itemName != null" >
+        item-name = #{record.itemName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.itemClass != null" >
+        item-class = #{record.itemClass,jdbcType=INTEGER},
+      </if>
+      <if test="record.itemDesc != null" >
+        item-desc = #{record.itemDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.itemPrice != null" >
+        item-price = #{record.itemPrice,jdbcType=INTEGER},
+      </if>
+      <if test="record.itemDiscount != null" >
+        item-discount = #{record.itemDiscount,jdbcType=DECIMAL},
+      </if>
+      <if test="record.itemImg1 != null" >
+        item-img1 = #{record.itemImg1,jdbcType=VARCHAR},
+      </if>
+      <if test="record.itemImg2 != null" >
+        item-img2 = #{record.itemImg2,jdbcType=VARCHAR},
+      </if>
+      <if test="record.itemImg3 != null" >
+        item-img3 = #{record.itemImg3,jdbcType=VARCHAR},
+      </if>
+      <if test="record.itemCount != null" >
+        item-count = #{record.itemCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.itemClickcount != null" >
+        item-clickCount = #{record.itemClickcount,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update item
+    set item-id = #{record.itemId,jdbcType=INTEGER},
+      item-name = #{record.itemName,jdbcType=VARCHAR},
+      item-class = #{record.itemClass,jdbcType=INTEGER},
+      item-desc = #{record.itemDesc,jdbcType=VARCHAR},
+      item-price = #{record.itemPrice,jdbcType=INTEGER},
+      item-discount = #{record.itemDiscount,jdbcType=DECIMAL},
+      item-img1 = #{record.itemImg1,jdbcType=VARCHAR},
+      item-img2 = #{record.itemImg2,jdbcType=VARCHAR},
+      item-img3 = #{record.itemImg3,jdbcType=VARCHAR},
+      item-count = #{record.itemCount,jdbcType=INTEGER},
+      item-clickCount = #{record.itemClickcount,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.huaxin.onestopprocurement.po.Item" >
+    update item
+    <set >
+      <if test="itemName != null" >
+        item-name = #{itemName,jdbcType=VARCHAR},
+      </if>
+      <if test="itemClass != null" >
+        item-class = #{itemClass,jdbcType=INTEGER},
+      </if>
+      <if test="itemDesc != null" >
+        item-desc = #{itemDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="itemPrice != null" >
+        item-price = #{itemPrice,jdbcType=INTEGER},
+      </if>
+      <if test="itemDiscount != null" >
+        item-discount = #{itemDiscount,jdbcType=DECIMAL},
+      </if>
+      <if test="itemImg1 != null" >
+        item-img1 = #{itemImg1,jdbcType=VARCHAR},
+      </if>
+      <if test="itemImg2 != null" >
+        item-img2 = #{itemImg2,jdbcType=VARCHAR},
+      </if>
+      <if test="itemImg3 != null" >
+        item-img3 = #{itemImg3,jdbcType=VARCHAR},
+      </if>
+      <if test="itemCount != null" >
+        item-count = #{itemCount,jdbcType=INTEGER},
+      </if>
+      <if test="itemClickcount != null" >
+        item-clickCount = #{itemClickcount,jdbcType=INTEGER},
+      </if>
+    </set>
+    where item-id = #{itemId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.huaxin.onestopprocurement.po.Item" >
+    update item
+    set item-name = #{itemName,jdbcType=VARCHAR},
+      item-class = #{itemClass,jdbcType=INTEGER},
+      item-desc = #{itemDesc,jdbcType=VARCHAR},
+      item-price = #{itemPrice,jdbcType=INTEGER},
+      item-discount = #{itemDiscount,jdbcType=DECIMAL},
+      item-img1 = #{itemImg1,jdbcType=VARCHAR},
+      item-img2 = #{itemImg2,jdbcType=VARCHAR},
+      item-img3 = #{itemImg3,jdbcType=VARCHAR},
+      item-count = #{itemCount,jdbcType=INTEGER},
+      item-clickCount = #{itemClickcount,jdbcType=INTEGER}
+    where item-id = #{itemId,jdbcType=INTEGER}
+  </update>
+</mapper>
